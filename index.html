@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nutri Mix</title>
+<link rel="icon" type="image/jpeg" href="logo 2.jpeg">
+<style>
+body{font-family:Arial,sans-serif;margin:0;background:#f8f1e7;color:#3b2414;scroll-behavior:smooth}
+header{background:#fff;padding:20px;text-align:center}
+header img{width:140px;max-width:80%}
+nav{position:sticky;top:0;background:#3b2414;padding:12px;z-index:1000;text-align:center}
+nav a{color:#fff;text-decoration:none;margin:0 10px;font-size:14px}
+.hero img,.section img{width:100%;border-radius:20px}
+.section{max-width:1200px;margin:auto;padding:50px 20px}
+.products{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:24px}
+.card,.review,.cart-box{background:#fff;border-radius:18px;padding:20px;box-shadow:0 6px 18px rgba(0,0,0,.08)}
+.card img{width:100%;height:280px;object-fit:cover;border-radius:14px}
+button,.btn{background:#5a341d;color:#fff;border:none;padding:12px 18px;border-radius:10px;cursor:pointer;text-decoration:none;display:inline-block}
+.price{font-size:28px;font-weight:bold;color:#5a341d}
+.badge{background:#fff3cd;padding:12px 16px;border-radius:10px;margin:10px 0}
+#cartIcon{position:fixed;right:20px;bottom:20px;background:#5a341d;color:#fff;padding:14px 18px;border-radius:999px;z-index:1000}
+.reviews{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px}
+input,textarea{width:100%;padding:12px;margin:8px 0;border:1px solid #ddd;border-radius:8px;box-sizing:border-box}
+footer{background:#3b2414;color:#fff;text-align:center;padding:30px;margin-top:40px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:30px}
+@media(max-width:768px){.two{grid-template-columns:1fr} nav a{display:inline-block;margin:6px}}
+
+.hero-slider{max-width:1200px;margin:auto;padding:20px}
+.slider{position:relative;overflow:hidden;border-radius:20px}
+.slide{display:none}
+.slide.active{display:block;animation:fade .8s ease}
+.slide img{width:100%;display:block;border-radius:20px}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+.slider-dots{text-align:center;margin-top:15px}
+.dot{height:12px;width:12px;margin:0 5px;background:#bbb;border-radius:50%;display:inline-block;cursor:pointer}
+.dot.active{background:#5a341d}
+
+
+#combo .products{
+grid-template-columns:repeat(auto-fit,minmax(450px,1fr));
+}
+#combo .card img{
+width:100%;
+height:350px;
+object-fit:contain;
+border-radius:14px;
+background:#fff;
+padding:10px;
+}
+
+</style></head>
+<body>
+<header>
+<img src="logo 2.jpeg" alt="Nutri Mix Logo">
+<h1>Nutri Mix</h1>
+<p>One Sip. Endless Benefits.</p>
+</header>
+
+<nav>
+<a href="#home">Home</a>
+<a href="#shop">Nutri Chocoo</a>
+<a href="#nutri-mocha">Nutri Mocha</a>
+<a href="#combo">Combo Packs</a>
+<a href="#story">Our Story</a>
+<a href="#ingredients">Ingredients</a>
+<a href="#benefits">Benefits</a>
+<a href="#reviews">Reviews</a>
+<a href="#faq">FAQ</a>
+<a href="#contact">Contact</a>
+<a href="#checkout">Checkout</a>
+</nav>
+
+<a id="cartIcon" href="#cart">🛒 Cart (<span id="cartCount">0</span>)</a>
+
+<section id="home" class="hero-slider">
+<div class="slider">
+<a href="#home" class="slide active"><img src="nc 9.jpeg"></a>
+<a href="#shop" class="slide"><img src="nc 1.png"></a>
+<a href="#nutri-mocha" class="slide"><img src="nc 2.png"></a>
+<a href="#home" class="slide"><img src="nc 3.png"></a>
+<a href="#home" class="slide"><img src="nc 4.png"></a>
+<a href="#combo" class="slide"><img src="slide 1.jpeg" alt="Combo Pack Offer"></a>
+</div>
+
+<div class="slider-dots">
+<span class="dot active"></span>
+<span class="dot"></span>
+<span class="dot"></span>
+<span class="dot"></span>
+<span class="dot"></span>
+<span class="dot"></span>
+</div>
+
+<div class="badge">🚚 Currently delivering all over Uttar Pradesh only</div>
+<div class="badge">🍫 New exciting flavours coming soon in future!</div>
+</section>
+
+
+<section id="shop" class="section">
+<h2>Shop Nutri Chocoo Mix</h2>
+<div class="products">
+    <div class="card">
+      <img src="nc_101.jpeg" alt="Small Pack">
+      <h3>Small Pack</h3>
+      <p class="weight">100 g</p>
+      <p class="price">₹99</p>
+      <div data-product="Small Pack" data-price="99" data-img="nc_101.jpeg"><button onclick="addToCart('Small Pack', 99, 'nc_101.jpeg')">Add to Cart</button></div>
+    </div>
+    
+    <div class="card">
+      <img src="nc_121.jpeg" alt="Regular Pack">
+      <h3>Regular Pack</h3>
+      <p class="weight">250 g</p>
+      <p class="price">₹249</p>
+      <div data-product="Regular Pack" data-price="249" data-img="nc_121.jpeg"><button onclick="addToCart('Regular Pack', 249, 'nc_121.jpeg')">Add to Cart</button></div>
+    </div>
+    
+    <div class="card">
+      <img src="nc_111.jpeg" alt="Value Pack">
+      <h3>Value Pack</h3>
+      <p class="weight">500 g</p>
+      <p class="price">₹499</p>
+      <div data-product="Value Pack" data-price="499" data-img="nc_111.jpeg"><button onclick="addToCart('Value Pack', 499, 'nc_111.jpeg')">Add to Cart</button></div>
+    </div>
+    
+    <div class="card">
+      <img src="nc_91.jpeg" alt="Super Saver Pack">
+      <h3>Super Saver Pack</h3>
+      <p class="weight">1 kg</p>
+      <p class="price">₹999</p>
+      <div data-product="Super Saver Pack" data-price="999" data-img="nc_91.jpeg"><button onclick="addToCart('Super Saver Pack', 999, 'nc_91.jpeg')">Add to Cart</button></div>
+    </div>
+    </div>
+</section>
+
+<section id="nutri-mocha" class="section">
+<h2>Shop Nutri Mocha Mix</h2>
+
+<div class="products">
+
+<div class="card">
+<img src="nc 5.png" alt="Nutri Mocha 100g">
+<h3>Small Pack</h3>
+<p class="weight">100 g</p>
+<p class="price">₹120</p>
+<div data-product="Nutri Mocha 100g" data-price="120" data-img="nc 5.png"><button onclick="addToCart('Nutri Mocha 100g', 120, 'nc 5.png')">Add to Cart</button></div>
+</div>
+
+<div class="card">
+<img src="nc 6.png" alt="Nutri Mocha 250g">
+<h3>Regular Pack</h3>
+<p class="weight">250 g</p>
+<p class="price">₹270</p>
+<div data-product="Nutri Mocha 250g" data-price="270" data-img="nc 6.png"><button onclick="addToCart('Nutri Mocha 250g', 270, 'nc 6.png')">Add to Cart</button></div>
+</div>
+
+<div class="card">
+<img src="nc 7.png" alt="Nutri Mocha 500g">
+<h3>Value Pack</h3>
+<p class="weight">500 g</p>
+<p class="price">₹520</p>
+<div data-product="Nutri Mocha 500g" data-price="520" data-img="nc 7.png"><button onclick="addToCart('Nutri Mocha 500g', 520, 'nc 7.png')">Add to Cart</button></div>
+</div>
+
+<div class="card">
+<img src="nc 8.png" alt="Nutri Mocha 1kg">
+<h3>Super Saver Pack</h3>
+<p class="weight">1 kg</p>
+<p class="price">₹999</p>
+<div data-product="Nutri Mocha 1kg" data-price="999" data-img="nc 8.png"><button onclick="addToCart('Nutri Mocha 1kg', 999, 'nc 8.png')">Add to Cart</button></div>
+</div>
+
+</div>
+</section>
+
+
+<section id="combo" class="section">
+<h2>Combo Packs</h2>
+
+<div class="products">
+
+<div class="card">
+<img src="100 gm.png" alt="100g Combo Pack">
+<h3>100g Combo Pack</h3>
+<p>Nutri Chocoo 100g + Nutri Mocha 100g</p>
+<p class="price">₹199</p>
+<div data-product="100g Combo Pack" data-price="199" data-img="100 gm.png">
+<button onclick="addToCart('100g Combo Pack',199,'100 gm.png')">Add to Cart</button>
+</div>
+</div>
+
+<div class="card">
+<img src="250gm.png" alt="250g Combo Pack">
+<h3>250g Combo Pack</h3>
+<p>Nutri Chocoo 250g + Nutri Mocha 250g</p>
+<p class="price">₹479</p>
+<div data-product="250g Combo Pack" data-price="479" data-img="250gm.png">
+<button onclick="addToCart('250g Combo Pack',479,'250gm.png')">Add to Cart</button>
+</div>
+</div>
+
+</div>
+</section>
+
+<section id="cart" class="section">
+<h2>Your Cart</h2>
+<div class="cart-box">
+<div id="cartItems">No items added yet.</div>
+<h3>Total: ₹<span id="cartTotal">0</span></h3>
+<a class="btn" href="#checkout">Proceed to Checkout</a>
+</div>
+</section>
+
+<section id="story" class="section">
+<h2>Our Story</h2>
+<img src="our_story_custom.jpeg" alt="Our Story">
+</section>
+
+<section id="ingredients" class="section">
+<h2>Ingredients</h2>
+<img src="ingredients_benefits_main.jpeg" alt="Ingredients">
+</section>
+
+<section id="benefits" class="section">
+<h2>Benefits</h2>
+<div class="two">
+<img src="ingredients_benefits_main.jpeg" alt="Benefits">
+
+</div>
+
+<div style="display:flex;gap:20px;flex-wrap:wrap;justify-content:center;margin-top:30px;">
+  <img src="benefits_extra_1.jpeg" alt="Benefits Image 1" style="max-width:400px;width:100%;border-radius:20px;box-shadow:0 10px 30px rgba(0,0,0,0.15);">
+  <img src="benefits_extra_2.jpeg" alt="Benefits Image 2" style="max-width:400px;width:100%;border-radius:20px;box-shadow:0 10px 30px rgba(0,0,0,0.15);">
+</div>
+
+</section>
+
+<section id="reviews" class="section">
+<h2>Customer Reviews</h2>
+<div class="reviews"><div class="review"><strong>⭐⭐⭐⭐⭐ Priya Sharma, Lucknow</strong><p>My kids love Nutri Chocoo and ask for it every morning.</p></div><div class="review"><strong>⭐⭐⭐⭐⭐ Amit Verma, Kanpur</strong><p>Healthy and tasty. Much better than regular chocolate drinks.</p></div><div class="review"><strong>⭐⭐⭐⭐⭐ Neha Singh, Noida</strong><p>Natural ingredients and great taste.</p></div><div class="review"><strong>⭐⭐⭐⭐⭐ Rohit Gupta, Ghaziabad</strong><p>Excellent product and quick delivery.</p></div><div class="review"><strong>⭐⭐⭐⭐⭐ Pooja Mishra, Prayagraj</strong><p>No refined sugar is the best part.</p></div><div class="review"><strong>⭐⭐⭐⭐⭐ Ankit Tiwari, Varanasi</strong><p>Rich chocolate taste with nutrition.</p></div><div class="review"><strong>⭐⭐⭐⭐⭐ Shweta Yadav, Gorakhpur</strong><p>Perfect for the whole family.</p></div><div class="review"><strong>⭐⭐⭐⭐⭐ Rahul Saxena, Agra</strong><p>Premium quality and homemade feel.</p></div><div class="review"><strong>⭐⭐⭐⭐⭐ Sakshi Jain, Meerut</strong><p>My daughter loves it.</p></div><div class="review"><strong>⭐⭐⭐⭐⭐ Vikas Srivastava, Bareilly</strong><p>Worth every rupee.</p></div><div class="review"><strong>⭐⭐⭐⭐⭐ Nidhi Pandey, Ayodhya</strong><p>Great ingredients and packaging.</p></div><div class="review"><strong>⭐⭐⭐⭐⭐ Manoj Kumar, Aligarh</strong><p>Healthy alternative to market products.</p></div><div class="review"><strong>⭐⭐⭐⭐⭐ Ritu Chauhan, Jhansi</strong><p>Very satisfying taste.</p></div><div class="review"><strong>⭐⭐⭐⭐⭐ Deepak Agarwal, Mathura</strong><p>Excellent immunity support.</p></div><div class="review"><strong>⭐⭐⭐⭐⭐ Kavita Gupta, Moradabad</strong><p>Will order again.</p></div><div class="review"><strong>⭐⭐⭐⭐⭐ Saurabh Singh, Sitapur</strong><p>Highly recommended.</p></div></div>
+
+<h3 style="margin-top:40px">Submit Your Review</h3>
+<form id="reviewForm" class="cart-box">
+<input type="hidden" name="access_key" value="07114dca-88aa-42e1-85ba-ffed48cbf87e">
+<input type="hidden" name="subject" value="New Nutri Chocoo Customer Review">
+<input type="hidden" name="from_name" value="Nutri Chocoo Website">
+
+<input name="Customer Name" placeholder="Your Name" required>
+<input name="Mobile Number" placeholder="Mobile Number" required>
+<textarea name="Review" placeholder="Write your review" required></textarea>
+
+<button type="submit">Submit Review</button>
+
+<div id="reviewSuccess" style="display:none;margin-top:15px;padding:15px;background:#d4edda;color:#155724;border-radius:10px;font-weight:bold;">
+✅ Thank You! Your review has been submitted successfully.
+</div>
+
+<div id="reviewError" style="display:none;margin-top:15px;padding:15px;background:#f8d7da;color:#721c24;border-radius:10px;font-weight:bold;">
+❌ Something went wrong. Please try again.
+</div>
+</form>
+
+</section>
+
+<section id="faq" class="section">
+<h2>FAQ</h2>
+<div class="review"><strong>How to use?</strong><p>Add 2-3 teaspoons in warm or cold milk and stir well.</p></div>
+<div class="review"><strong>Is it suitable for kids?</strong><p>Yes, it is suitable for both kids and adults.</p></div>
+<div class="review"><strong>What is the shelf life?</strong><p>Best before one month from manufacturing.</p></div>
+</section>
+
+<section id="checkout" class="section">
+<h2>Checkout & Payment</h2>
+<div class="two">
+<div class="cart-box">
+<input id="custName" placeholder="Full Name">
+<input id="custPhone" placeholder="Mobile Number">
+<textarea id="custAddress" placeholder="Complete Address"></textarea>
+<button onclick="document.getElementById('qr').scrollIntoView({behavior:'smooth'})">Proceed to Payment</button>
+</div>
+<div id="qr">
+<div class="badge"><strong>Important:</strong> After completing the payment, please click the "Send Order on WhatsApp" button to share your order details and payment confirmation. Your order will be confirmed only after this step.</div>
+
+<img src="qr_payment.jpeg" alt="QR Payment">
+<p><button onclick="sendWhatsApp()">Send Order on WhatsApp</button></p>
+</div>
+</div>
+</section>
+
+
+
+<section id="contact" class="section">
+<h2>Contact Us</h2>
+<p>📱 WhatsApp: 9250260057</p>
+<p>📷 Instagram: <a href="https://instagram.com/nutri___mix" target="_blank" style="color:#E1306C;text-decoration:none;font-weight:bold;">@nutri___mix</a></p>
+<p>🚚 Delivery: All over Uttar Pradesh only</p>
+<p>🍫 New flavours coming soon!</p>
+</section>
+
+
+
+<footer>© 2026 Nutri Mix • Homemade with Love</footer>
+
+<script>
+let cart = [];
+function addToCart(name, price, img){
+  const item = cart.find(i => i.name === name);
+  if(item) item.qty += 1;
+  else cart.push({name, price, img, qty:1});
+  renderCart();
+  updateProductControls();
+  
+}
+function renderCart(){
+  document.getElementById('cartCount').textContent = cart.reduce((a,b)=>a+b.qty,0);
+  const cartItems = document.getElementById('cartItems');
+  if(cart.length===0){ cartItems.innerHTML='No items added yet.'; document.getElementById('cartTotal').textContent='0'; return; }
+  let total = 0;
+  cartItems.innerHTML = cart.map((item, index) => {
+    total += item.price * item.qty;
+    return `<div style="display:flex;gap:15px;align-items:center;margin-bottom:15px">
+      <img src="${item.img}" style="width:70px;height:70px;object-fit:cover;border-radius:10px">
+      <div style="flex:1">
+<strong>${item.name}</strong><br>₹${item.price}
+<div style="display:flex;align-items:center;gap:8px;margin-top:8px">
+<button onclick="changeQty(${index},-1)">−</button>
+<span>${item.qty}</span>
+<button onclick="changeQty(${index},1)">+</button>
+</div>
+</div>
+<button onclick="removeItem(${index})">Remove</button>
+    </div>`;
+  }).join('');
+  document.getElementById('cartTotal').textContent = total;
+}
+function removeItem(index){ cart.splice(index,1); renderCart(); }
+function sendWhatsApp(){
+  if(cart.length===0){ alert('Please add products to cart first.'); return; }
+  const name = document.getElementById('custName').value;
+  const phone = document.getElementById('custPhone').value;
+  const address = document.getElementById('custAddress').value;
+  const total = document.getElementById('cartTotal').textContent;
+  let msg = 'Hello, I want to order Nutri Mix.%0A%0A';
+  msg += 'Name: ' + name + '%0APhone: ' + phone + '%0AAddress: ' + address + '%0A%0A';
+  msg += 'Order Details:%0A';
+  cart.forEach(i => msg += '- ' + i.name + ' x ' + i.qty + '%0A');
+  msg += '%0ATotal: ₹' + total;
+  window.open('https://wa.me/919250260057?text=' + msg, '_blank');
+}
+
+// ================= AJAX REVIEW SUBMISSION =================
+document.addEventListener('DOMContentLoaded', function() {
+  const reviewForm = document.getElementById('reviewForm');
+  if (!reviewForm) return;
+
+  reviewForm.addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    const submitButton = reviewForm.querySelector('button[type="submit"]');
+    const successBox = document.getElementById('reviewSuccess');
+    const errorBox = document.getElementById('reviewError');
+
+    successBox.style.display = 'none';
+    errorBox.style.display = 'none';
+
+    submitButton.disabled = true;
+    submitButton.textContent = 'Submitting...';
+
+    const formData = new FormData(reviewForm);
+
+    try {
+      const response = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        body: formData
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        successBox.style.display = 'block';
+        reviewForm.reset();
+        reviewForm.scrollIntoView({behavior: 'smooth', block: 'center'});
+      } else {
+        errorBox.style.display = 'block';
+      }
+    } catch (error) {
+      errorBox.style.display = 'block';
+    }
+
+    submitButton.disabled = false;
+    submitButton.textContent = 'Submit Review';
+  });
+});
+// ================= END AJAX REVIEW SUBMISSION =================
+
+const slides=document.querySelectorAll('.slide');
+const dots=document.querySelectorAll('.dot');
+let currentSlide=0;
+function showSlide(index){
+slides.forEach(s=>s.classList.remove('active'));
+dots.forEach(d=>d.classList.remove('active'));
+slides[index].classList.add('active');
+dots[index].classList.add('active');
+currentSlide=index;
+}
+setInterval(()=>{
+currentSlide=(currentSlide+1)%slides.length;
+showSlide(currentSlide);
+},4000);
+dots.forEach((dot,index)=>dot.addEventListener('click',()=>showSlide(index)));
+
+
+
+function updateProductControls(){
+ document.querySelectorAll('[data-product]').forEach(box=>{
+   const name=box.dataset.product;
+   const price=box.dataset.price;
+   const img=box.dataset.img;
+   const item=cart.find(i=>i.name===name);
+
+   if(item){
+      box.innerHTML=`<div style="display:flex;justify-content:center;align-items:center;gap:10px">
+      <button onclick="changeQtyByName('${name}',-1)">−</button>
+      <strong>${item.qty}</strong>
+      <button onclick="changeQtyByName('${name}',1)">+</button>
+      </div>`;
+   }else{
+      box.innerHTML=`<button onclick="addToCart('${name}',${price},'${img}')">Add to Cart</button>`;
+   }
+ });
+}
+
+function changeQtyByName(name,change){
+ const item=cart.find(i=>i.name===name);
+ if(!item) return;
+ item.qty += change;
+ if(item.qty<=0){
+   cart = cart.filter(i=>i.name!==name);
+ }
+ renderCart();
+ updateProductControls();
+}
+
+function changeQty(index,change){
+ cart[index].qty += change;
+ if(cart[index].qty<=0){
+   cart.splice(index,1);
+ }
+ renderCart();
+ updateProductControls();
+}
+
+</script>
+</body></html>
