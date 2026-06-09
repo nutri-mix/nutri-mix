@@ -341,7 +341,16 @@ function sendWhatsApp(){
   let msg = 'Hello, I want to order Nutri Mix.%0A%0A';
   msg += 'Name: ' + name + '%0APhone: ' + phone + '%0AAddress: ' + address + '%0A%0A';
   msg += 'Order Details:%0A';
-  cart.forEach(i => msg += '- ' + i.name + ' x ' + i.qty + '%0A');
+  cart.forEach(i => {
+  let productName = i.name;
+
+  if(i.name === 'Small Pack') productName = 'Nutri Chocoo - Small Pack';
+  else if(i.name === 'Regular Pack') productName = 'Nutri Chocoo - Regular Pack';
+  else if(i.name === 'Value Pack') productName = 'Nutri Chocoo - Value Pack';
+  else if(i.name === 'Super Saver Pack') productName = 'Nutri Chocoo - Super Saver Pack';
+
+  msg += '- ' + productName + ' x ' + i.qty + '%0A';
+});
   msg += '%0ATotal: ₹' + total;
   window.open('https://wa.me/919250260057?text=' + msg, '_blank');
 }
