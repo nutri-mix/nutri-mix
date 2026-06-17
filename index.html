@@ -46,19 +46,59 @@ background:#fff;
 padding:10px;
 }
 
+
+.floating-wa{position:fixed;left:20px;bottom:20px;background:#25D366;color:#fff;padding:14px 18px;border-radius:999px;text-decoration:none;font-weight:bold;z-index:1000}
+.announce{background:#5a341d;color:#fff;text-align:center;padding:10px;font-weight:bold}
+.trust-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px;margin-top:25px}
+.trust-card{background:#fff;padding:20px;border-radius:16px;box-shadow:0 6px 18px rgba(0,0,0,.08);text-align:center}
+.card{transition:transform .3s ease}
+.card:hover{transform:translateY(-6px)}
+.launch{background:#ffefc2;color:#5a341d;padding:6px 10px;border-radius:20px;font-size:12px;font-weight:bold;display:inline-block;margin-bottom:8px}
+.sticky-cartbar{position:fixed;bottom:0;left:0;right:0;background:#3b2414;color:#fff;padding:10px;text-align:center;z-index:999}
+body{padding-bottom:60px}
+
+
+.mobile-menu-btn{display:none;background:#3b2414;color:#fff;border:none;padding:10px 14px;border-radius:8px;margin:10px}
+@media(max-width:768px){
+nav{display:none;text-align:left;padding:15px}
+nav.show{display:block}
+nav a{display:block;padding:10px 0}
+.mobile-menu-btn{display:block;position:sticky;top:0;z-index:1001}
+}
+
+
+html{scroll-behavior:smooth}
+#cartIcon.bump{animation:bump .45s ease}
+@keyframes bump{0%{transform:scale(1)}50%{transform:scale(1.18)}100%{transform:scale(1)}}
+
+@media(max-width:768px){
+.products{grid-template-columns:1fr!important}
+#combo .products{grid-template-columns:1fr!important}
+.card img{height:240px!important}
+}
+
+.lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:9999;justify-content:center;align-items:center}
+.lightbox img{max-width:90%;max-height:90%}
+
+.qr-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:9999}
+.qr-box{background:#fff;max-width:500px;margin:5% auto;padding:20px;border-radius:16px;text-align:center}
+
 </style></head>
 <body>
+<div class="announce">🚚 PAN INDIA DELIVERY • 🎉 New Launch: Vanilla & Butterscotch</div>
 <header>
 <img src="logo 2.jpeg" alt="Nutri Mix Logo">
 <h1>Nutri Mix</h1>
 <p>One Sip. Endless Benefits.</p>
 </header>
 
-<nav>
+<button class="mobile-menu-btn" onclick="toggleMenu()">☰ Menu</button><nav>
 <a href="#home">Home</a>
 <a href="#shop">Nutri Chocoo</a>
 <a href="#nutri-mocha">Nutri Mocha</a>
 <a href="#combo">Combo Packs</a>
+<a href="#nutri-vanilla">Vanilla</a>
+<a href="#nutri-butterscotch">Butterscotch</a>
 <a href="#story">Our Story</a>
 <a href="#ingredients">Ingredients</a>
 <a href="#benefits">Benefits</a>
@@ -72,11 +112,11 @@ padding:10px;
 
 <section id="home" class="hero-slider">
 <div class="slider">
-<a href="#home" class="slide active"><img src="nc 9.jpeg"></a>
-<a href="#shop" class="slide"><img src="nc 1.png"></a>
-<a href="#nutri-mocha" class="slide"><img src="nc 2.png"></a>
+<a href="#nutri-vanilla" class="slide active"><img src="nc 9.jpeg"></a>
+<a href="#nutri-butterscotch" class="slide"><img src="nc 1.png"></a>
+<a href="#combo" class="slide"><img src="nc 2.png"></a>
 <a href="#home" class="slide"><img src="nc 3.png"></a>
-<a href="#home" class="slide"><img src="nc 4.png"></a>
+<a href="#combo" class="slide"><img src="nc 4.png"></a>
 <a href="#combo" class="slide"><img src="slide 1.jpeg" alt="Combo Pack Offer"></a>
 </div>
 
@@ -89,7 +129,7 @@ padding:10px;
 <span class="dot"></span>
 </div>
 
-<div class="badge">🚚 Currently delivering all over Uttar Pradesh only</div>
+<div class="badge">🚚 Now delivering across PAN India</div>
 <div class="badge">🍫 New exciting flavours coming soon in future!</div>
 </section>
 
@@ -172,33 +212,99 @@ padding:10px;
 </section>
 
 
+
+<section id="nutri-vanilla" class="section">
+<h2>Shop Nutri Vanilla Mix</h2>
+<div class="products">
+<div class="card"><img src="vn 100.png" alt="Nutri Vanilla 100g"><h3>Small Pack</h3><p class="weight">100 g</p><p class="price">₹99</p><div data-product="Nutri Vanilla 100g" data-price="99" data-img="vn 100.png"><button onclick="addToCart('Nutri Vanilla 100g',99,'vn 100.png')">Add to Cart</button></div></div>
+<div class="card"><img src="vn 250.png" alt="Nutri Vanilla 250g"><h3>Regular Pack</h3><p class="weight">250 g</p><p class="price">₹249</p><div data-product="Nutri Vanilla 250g" data-price="249" data-img="vn 250.png"><button onclick="addToCart('Nutri Vanilla 250g',249,'vn 250.png')">Add to Cart</button></div></div>
+<div class="card"><img src="vn 500.png" alt="Nutri Vanilla 500g"><h3>Value Pack</h3><p class="weight">500 g</p><p class="price">₹499</p><div data-product="Nutri Vanilla 500g" data-price="499" data-img="vn 500.png"><button onclick="addToCart('Nutri Vanilla 500g',499,'vn 500.png')">Add to Cart</button></div></div>
+</div>
+</section>
+
+<section id="nutri-butterscotch" class="section">
+<h2>Shop Nutri Butterscotch Mix</h2>
+<div class="products">
+<div class="card"><img src="bs 100.png" alt="Nutri Butterscotch 100g"><h3>Small Pack</h3><p class="weight">100 g</p><p class="price">₹99</p><div data-product="Nutri Butterscotch 100g" data-price="99" data-img="bs 100.png"><button onclick="addToCart('Nutri Butterscotch 100g',99,'bs 100.png')">Add to Cart</button></div></div>
+<div class="card"><img src="bs 250.png" alt="Nutri Butterscotch 250g"><h3>Regular Pack</h3><p class="weight">250 g</p><p class="price">₹249</p><div data-product="Nutri Butterscotch 250g" data-price="249" data-img="bs 250.png"><button onclick="addToCart('Nutri Butterscotch 250g',249,'bs 250.png')">Add to Cart</button></div></div>
+<div class="card"><img src="bs 500.png" alt="Nutri Butterscotch 500g"><h3>Value Pack</h3><p class="weight">500 g</p><p class="price">₹499</p><div data-product="Nutri Butterscotch 500g" data-price="499" data-img="bs 500.png"><button onclick="addToCart('Nutri Butterscotch 500g',499,'bs 500.png')">Add to Cart</button></div></div>
+</div>
+</section>
+
 <section id="combo" class="section">
 <h2>Combo Packs</h2>
 
 <div class="products">
 
 <div class="card">
-<img src="100 gm.png" alt="100g Combo Pack">
-<h3>100g Combo Pack</h3>
+<img src="100 gm.png" alt="🍫 Chocoo Mocha Duo Pack">
+<h3>🍫 Chocoo Mocha Duo Pack</h3>
 <p>Nutri Chocoo 100g + Nutri Mocha 100g</p>
 <p class="price">₹199</p>
-<div data-product="100g Combo Pack" data-price="199" data-img="100 gm.png">
-<button onclick="addToCart('100g Combo Pack',199,'100 gm.png')">Add to Cart</button>
+<div data-product="🍫 Chocoo Mocha Duo Pack" data-price="199" data-img="100 gm.png">
+<button onclick="addToCart('🍫 Chocoo Mocha Duo Pack',199,'100 gm.png')">Add to Cart</button>
 </div>
 </div>
 
 <div class="card">
-<img src="250gm.png" alt="250g Combo Pack">
-<h3>250g Combo Pack</h3>
+<img src="250gm.png" alt="👑 Chocoo Mocha Family Pack">
+<h3>👑 Chocoo Mocha Family Pack</h3>
 <p>Nutri Chocoo 250g + Nutri Mocha 250g</p>
 <p class="price">₹479</p>
-<div data-product="250g Combo Pack" data-price="479" data-img="250gm.png">
-<button onclick="addToCart('250g Combo Pack',479,'250gm.png')">Add to Cart</button>
+<div data-product="👑 Chocoo Mocha Family Pack" data-price="479" data-img="250gm.png">
+<button onclick="addToCart('👑 Chocoo Mocha Family Pack',479,'250gm.png')">Add to Cart</button>
+</div>
+</div>
+
+
+<div class="card">
+<img src="combo 1.png" alt="🤎 Chocoo Vanilla Duo">
+<h3>🤎 Chocoo Vanilla Duo</h3><p>Nutri Chocoo 100g + Nutri Vanilla 100g</p><p style="text-decoration:line-through;color:#888;">₹198</p><p class="price">₹179</p><p style="color:green;font-weight:bold;">Save ₹19</p>
+<div data-product="Combo 1" data-price="179" data-img="100 gm.png">
+<button onclick="addToCart('Combo 1',179,'100 gm.png')">Add to Cart</button></div></div>
+
+<div class="card">
+<img src="combo 4.png" alt="☕ Mocha Butterscotch Duo">
+<h3>☕ Mocha Butterscotch Duo</h3><p>Nutri Mocha 100g + Nutri Butterscotch 100g</p><p style="text-decoration:line-through;color:#888;">₹219</p><p class="price">₹199</p><p style="color:green;font-weight:bold;">Save ₹20</p>
+<div data-product="Combo 2" data-price="199" data-img="100 gm.png">
+<button onclick="addToCart('Combo 2',199,'100 gm.png')">Add to Cart</button></div></div>
+
+<div class="card">
+<img src="combo 5.png" alt="🍦 Vanilla Butterscotch Duo">
+<h3>🍦 Vanilla Butterscotch Duo</h3><p>Nutri Vanilla 100g + Nutri Butterscotch 100g</p><p style="text-decoration:line-through;color:#888;">₹198</p><p class="price">₹179</p><p style="color:green;font-weight:bold;">Save ₹19</p>
+<div data-product="Combo 3" data-price="179" data-img="100 gm.png">
+<button onclick="addToCart('Combo 3',179,'100 gm.png')">Add to Cart</button></div></div>
+
+<div class="card">
+<img src="combo 2.png" alt="🍫 Chocoo Butterscotch Duo">
+<h3>🍫 Chocoo Butterscotch Duo</h3><p>Nutri Chocoo 100g + Nutri Butterscotch 100g</p><p style="text-decoration:line-through;color:#888;">₹198</p><p class="price">₹179</p><p style="color:green;font-weight:bold;">Save ₹19</p>
+<div data-product="Combo 4" data-price="179" data-img="100 gm.png">
+<button onclick="addToCart('Combo 4',179,'100 gm.png')">Add to Cart</button></div></div>
+
+<div class="card">
+<img src="combo 3.png" alt="☕🍦 Mocha Vanilla Duo">
+<h3>☕🍦 Mocha Vanilla Duo</h3><p>Nutri Mocha 100g + Nutri Vanilla 100g</p><p style="text-decoration:line-through;color:#888;">₹219</p><p class="price">₹199</p><p style="color:green;font-weight:bold;">Save ₹20</p>
+<div data-product="Combo 5" data-price="199" data-img="100 gm.png">
+<button onclick="addToCart('Combo 5',199,'100 gm.png')">Add to Cart</button></div></div>
+
+
+<div class="card">
+<img src="combo 6.jpeg" alt="👑 Ultimate 4 Flavour Combo">
+<h3>👑 Ultimate 4 Flavour Combo</h3>
+<p>Nutri Chocoo 100g + Nutri Mocha 100g + Nutri Vanilla 100g + Nutri Butterscotch 100g</p>
+<p style="text-decoration:line-through;color:#888;">₹417</p>
+<p class="price">₹399</p>
+<p style="color:green;font-weight:bold;">Save ₹18</p>
+<div data-product="Super Combo Pack" data-price="399" data-img="100 gm.png">
+<button onclick="addToCart('Super Combo Pack',399,'100 gm.png')">Add to Cart</button>
 </div>
 </div>
 
 </div>
 </section>
+
+
+
 
 <section id="cart" class="section">
 <h2>Your Cart</h2>
@@ -221,10 +327,7 @@ padding:10px;
 
 <section id="benefits" class="section">
 <h2>Benefits</h2>
-<div class="two">
-<img src="ingredients_benefits_main.jpeg" alt="Benefits">
-
-</div>
+<div class="two"></div>
 
 <div style="display:flex;gap:20px;flex-wrap:wrap;justify-content:center;margin-top:30px;">
   <img src="benefits_extra_1.jpeg" alt="Benefits Image 1" style="max-width:400px;width:100%;border-radius:20px;box-shadow:0 10px 30px rgba(0,0,0,0.15);">
@@ -262,6 +365,7 @@ padding:10px;
 
 <section id="faq" class="section">
 <h2>FAQ</h2>
+<div class="review"><strong>What can I make with Nutri Mix?</strong><p>You can make healthy shakes, smoothies, ice cream, desserts, and Nutri Mix laddus.</p></div>
 <div class="review"><strong>How to use?</strong><p>Add 2-3 teaspoons in warm or cold milk and stir well.</p></div>
 <div class="review"><strong>Is it suitable for kids?</strong><p>Yes, it is suitable for both kids and adults.</p></div>
 <div class="review"><strong>What is the shelf life?</strong><p>Best before one month from manufacturing.</p></div>
@@ -274,7 +378,7 @@ padding:10px;
 <input id="custName" placeholder="Full Name">
 <input id="custPhone" placeholder="Mobile Number">
 <textarea id="custAddress" placeholder="Complete Address"></textarea>
-<button onclick="document.getElementById('qr').scrollIntoView({behavior:'smooth'})">Proceed to Payment</button>
+<button onclick="document.getElementById('qrModal').style.display='block'">Proceed to Payment</button>
 </div>
 <div id="qr">
 <div class="badge"><strong>Important:</strong> After completing the payment, please click the "Send Order on WhatsApp" button to share your order details and payment confirmation. Your order will be confirmed only after this step.</div>
@@ -287,15 +391,49 @@ padding:10px;
 
 
 
+
+<section class="section">
+<h2>Why Choose Nutri Mix?</h2>
+<div class="trust-grid">
+<div class="trust-card">🥛 Premium Ingredients</div>
+<div class="trust-card">🏠 Homemade Quality</div>
+<div class="trust-card">🚚 PAN India Delivery</div>
+<div class="trust-card">❤️ Loved By Families</div>
+</div>
+</section>
+
 <section id="contact" class="section">
 <h2>Contact Us</h2>
 <p>📱 WhatsApp: 9250260057</p>
 <p>📷 Instagram: <a href="https://instagram.com/nutri___mix" target="_blank" style="color:#E1306C;text-decoration:none;font-weight:bold;">@nutri___mix</a></p>
-<p>🚚 Delivery: All over Uttar Pradesh only</p>
+<p>🚚 Delivery: PAN India</p>
 <p>🍫 New flavours coming soon!</p>
 </section>
 
 
+
+
+<div id="successPopup" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:5000;">
+  <div style="background:#fff;max-width:420px;margin:12% auto;padding:30px;border-radius:20px;text-align:center">
+    <h2>🎉 Order Ready!</h2>
+    <p>Your WhatsApp order message has been prepared.<br>Please send it on WhatsApp to confirm your order.</p>
+    <button onclick="closePopup()">Awesome!</button>
+  </div>
+</div>
+
+
+<div id="qrModal" class="qr-modal">
+<div class="qr-box">
+<h2>Scan & Pay</h2>
+<img src="qr_payment.jpeg" style="max-width:300px;width:100%">
+<br><br>
+<button onclick="document.getElementById('qrModal').style.display='none'">Close</button>
+</div>
+</div>
+
+<div id="lightbox" class="lightbox" onclick="this.style.display='none'">
+<img id="lightboxImg" src="">
+</div>
 
 <footer>© 2026 Nutri Mix • Homemade with Love</footer>
 
@@ -353,6 +491,10 @@ function sendWhatsApp(){
 });
   msg += '%0ATotal: ₹' + total;
   window.open('https://wa.me/919250260057?text=' + msg, '_blank');
+
+setTimeout(()=>{
+document.getElementById('successPopup').style.display='block';
+},500);
 }
 
 // ================= AJAX REVIEW SUBMISSION =================
@@ -457,5 +599,55 @@ function changeQty(index,change){
  updateProductControls();
 }
 
+
+function toggleMenu(){
+document.querySelector('nav').classList.toggle('show');
+}
+
+
+function closePopup(){
+ document.getElementById('successPopup').style.display='none';
+}
+
+function saveCart(){
+ localStorage.setItem('nutrimix_cart', JSON.stringify(cart));
+}
+
+const savedCart = localStorage.getItem('nutrimix_cart');
+if(savedCart){
+ try{
+   cart = JSON.parse(savedCart);
+   renderCart();
+   updateProductControls();
+ }catch(e){}
+}
+
+const oldRenderCart = renderCart;
+renderCart = function(){
+ oldRenderCart();
+ saveCart();
+}
+
+
+document.querySelectorAll('.card img').forEach(img=>{
+ img.addEventListener('click',()=>{
+  document.getElementById('lightbox').style.display='flex';
+  document.getElementById('lightboxImg').src=img.src;
+ });
+});
+
+const oldAddToCart=addToCart;
+addToCart=function(name,price,img){
+ oldAddToCart(name,price,img);
+ const cart=document.getElementById('cartIcon');
+ cart.classList.remove('bump');
+ void cart.offsetWidth;
+ cart.classList.add('bump');
+}
+
 </script>
+
+
+<a style="position:fixed;left:20px;bottom:80px;background:#E1306C;color:#fff;padding:14px 18px;border-radius:999px;text-decoration:none;font-weight:bold;z-index:1000" href="https://instagram.com/nutri___mix" target="_blank">Instagram</a>
+<div class="sticky-cartbar">🛒 Shop Nutri Mix • PAN India Delivery</div>
 </body></html>
