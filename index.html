@@ -102,6 +102,47 @@ margin:auto;
 
 img{max-width:100%;height:auto}
 
+.whatsapp-highlight{animation:blinkHand 1s infinite;position:relative}
+.whatsapp-highlight::before{content:"👇";position:absolute;top:-35px;left:50%;transform:translateX(-50%);font-size:32px;animation:bounce 1s infinite}
+@keyframes blinkHand{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+@keyframes bounce{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(8px)}}
+
+
+
+.payment-guide-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.65);backdrop-filter:blur(6px);z-index:10000}
+.payment-guide-box{background:#fff;max-width:520px;margin:8% auto;padding:30px;border-radius:24px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.25)}
+.payment-guide-box h2{margin-top:10px}
+.payment-guide-box .icon{font-size:60px}
+.payment-guide-box ul{text-align:left;line-height:1.8}
+
+
+.offer-banner{
+background:linear-gradient(135deg,#5a341d,#8b5a2b);
+color:#fff;padding:15px;border-radius:16px;text-align:center;
+margin:20px auto;max-width:900px;font-weight:bold;
+box-shadow:0 8px 20px rgba(0,0,0,.15);
+position:relative;overflow:hidden;
+animation:pulseOffer 2s infinite;
+}
+.offer-banner::before{
+content:'';
+position:absolute;
+top:0;left:-100%;
+width:50%;height:100%;
+background:linear-gradient(90deg,transparent,rgba(255,255,255,.4),transparent);
+animation:shine 3s infinite;
+}
+@keyframes pulseOffer{
+0%,100%{transform:scale(1);box-shadow:0 8px 20px rgba(0,0,0,.15)}
+50%{transform:scale(1.02);box-shadow:0 12px 30px rgba(255,215,0,.5)}
+}
+@keyframes shine{
+100%{left:150%}
+}
+
+
+.fbt-box{background:#fff8e8;border:2px dashed #d4a017;padding:12px;border-radius:12px;margin:12px 0}
+.fbt-btn{margin:5px}
 </style></head>
 <body>
 <div class="announce">🚚 PAN INDIA DELIVERY • 🎉 New Launch: Vanilla & Butterscotch</div>
@@ -152,6 +193,13 @@ img{max-width:100%;height:auto}
 <div class="badge">🍫 New exciting flavours coming soon in future!</div>
 </section>
 
+
+
+<div class="offer-banner">
+🔥 LIMITED TIME OFFER 🔥<br>
+🛒 Cart Value ₹500 – ₹999 → Flat ₹20 OFF<br>
+🛒 Cart Value ₹1000 & Above → Flat ₹80 OFF
+</div>
 
 <section id="shop" class="section">
 <h2>Nutri Chocoo Mix</h2>
@@ -329,7 +377,11 @@ img{max-width:100%;height:auto}
 <h2>Your Cart</h2>
 <div class="cart-box">
 <div id="cartItems">No items added yet.</div>
-<h3>Total: ₹<span id="cartTotal">0</span></h3>
+<div id="shippingProgress" style="background:#eef8ee;padding:10px;border-radius:10px;margin:10px 0;font-weight:bold"></div>
+<div id="fbtSuggestions" class="fbt-box" style="display:none"></div>
+<div id="discountBox" style="display:none;background:#e8f8e8;padding:10px;border-radius:10px;margin:10px 0;font-weight:bold;color:green"></div>
+<h3>Subtotal: ₹<span id="cartSubtotal">0</span></h3>
+<h3>Total Payable: ₹<span id="cartTotal">0</span></h3>
 <a class="btn" href="#checkout">Proceed to Checkout</a>
 </div>
 </section>
@@ -397,13 +449,13 @@ img{max-width:100%;height:auto}
 <input id="custName" placeholder="Full Name">
 <input id="custPhone" placeholder="Mobile Number">
 <textarea id="custAddress" placeholder="Complete Address"></textarea>
-<button onclick="document.getElementById('qrModal').style.display='block'">Proceed to Payment</button>
+<button onclick="openPaymentModal()">Proceed to Payment</button>
 </div>
 <div id="qr">
 <div class="badge"><strong>Important:</strong> After completing the payment, please click the "Send Order on WhatsApp" button to share your order details and payment confirmation. Your order will be confirmed only after this step.</div>
 
 <img src="qr_payment.jpeg" alt="QR Payment" loading="lazy" decoding="async">
-<p><button onclick="sendWhatsApp()">Send Order on WhatsApp</button></p>
+<p><button id="waOrderBtn" onclick="sendWhatsApp()">Send Order on WhatsApp</button></p>
 </div>
 </div>
 </section>
@@ -432,21 +484,15 @@ img{max-width:100%;height:auto}
 
 
 
-<div id="successPopup" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:5000;">
-  <div style="background:#fff;max-width:420px;margin:12% auto;padding:30px;border-radius:20px;text-align:center">
-    <h2>🎉 Order Ready!</h2>
-    <p>Your WhatsApp order message has been prepared.<br>Please send it on WhatsApp to confirm your order.</p>
-    <button onclick="closePopup()">Awesome!</button>
-  </div>
-</div>
-
-
 <div id="qrModal" class="qr-modal">
 <div class="qr-box">
 <h2>Scan & Pay</h2>
+<div style="background:#fff3cd;padding:12px;border-radius:12px;margin-bottom:15px;font-weight:bold">
+💳 Pay This Amount: ₹<span id="qrPayAmount">0</span>
+</div>
 <img src="qr_payment.jpeg" style="max-width:300px;width:100%" loading="lazy" decoding="async">
 <br><br>
-<button onclick="document.getElementById('qrModal').style.display='none'">Close</button>
+<button onclick="closeQrModal()">Close</button>
 </div>
 </div>
 
@@ -469,7 +515,15 @@ function addToCart(name, price, img){
 function renderCart(){
   document.getElementById('cartCount').textContent = cart.reduce((a,b)=>a+b.qty,0);
   const cartItems = document.getElementById('cartItems');
-  if(cart.length===0){ cartItems.innerHTML='No items added yet.'; document.getElementById('cartTotal').textContent='0'; return; }
+  if(cart.length===0){
+  cartItems.innerHTML='No items added yet.';
+  document.getElementById('cartTotal').textContent='0';
+  document.getElementById('cartSubtotal').textContent='0';
+  document.getElementById('shippingProgress').innerHTML='';
+  document.getElementById('fbtSuggestions').style.display='none';
+  document.getElementById('discountBox').style.display='none';
+  return;
+}
   let total = 0;
   cartItems.innerHTML = cart.map((item, index) => {
     total += item.price * item.qty;
@@ -486,7 +540,40 @@ function renderCart(){
 <button onclick="removeItem(${index})">Remove</button>
     </div>`;
   }).join('');
-  document.getElementById('cartTotal').textContent = total;
+  
+let discount=0;
+if(total>=1000) discount=80;
+else if(total>=500) discount=20;
+
+document.getElementById('cartSubtotal').textContent = total;
+document.getElementById('cartTotal').textContent = total-discount;
+
+const sp=document.getElementById('shippingProgress');
+if(total<500){
+sp.innerHTML='🛒 Add ₹'+(500-total)+' more to unlock ₹20 OFF';
+}else if(total<1000){
+sp.innerHTML='🎉 ₹20 OFF unlocked! Add ₹'+(1000-total)+' more to unlock ₹80 OFF';
+}else{
+sp.innerHTML='🏆 Maximum discount unlocked: ₹80 OFF';
+}
+
+
+const fbt=document.getElementById('fbtSuggestions');
+if(cart.length > 0){
+fbt.style.display='block';
+fbt.innerHTML='🔥 <b>Customers Also Love</b><br><small>Try more flavours and save more with combo packs</small><br><button class="fbt-btn" onclick="addToCart(\'Nutri Mocha 100g\',120,\'nc 5.png\')">☕ Mocha</button><button class="fbt-btn" onclick="addToCart(\'Nutri Vanilla 100g\',99,\'vn 100.png\')">🍦 Vanilla</button><button class="fbt-btn" onclick="addToCart(\'Nutri Butterscotch 100g\',99,\'bs 100.png\')">🍯 Butterscotch</button><button class="fbt-btn" onclick="addToCart(\'Small Pack\',99,\'nc_101.jpeg\')">🍫 Chocoo</button><button class="fbt-btn" onclick="addToCart(\'👑 Ultimate 4 Flavour Combo\',399,\'combo 6.jpeg\')">👑 4 Flavour Combo</button>';
+}else{
+fbt.style.display='none';
+}
+
+const d=document.getElementById('discountBox');
+if(discount>0){
+d.style.display='block';
+d.innerHTML='🎉 Discount Applied: ₹'+discount+' OFF';
+}else{
+d.style.display='none';
+}
+
 }
 function removeItem(index){ cart.splice(index,1); renderCart(); }
 function sendWhatsApp(){
@@ -494,7 +581,11 @@ function sendWhatsApp(){
   const name = document.getElementById('custName').value;
   const phone = document.getElementById('custPhone').value;
   const address = document.getElementById('custAddress').value;
-  const total = document.getElementById('cartTotal').textContent;
+  
+const subtotal = document.getElementById('cartSubtotal') ? document.getElementById('cartSubtotal').textContent : 0;
+const total = document.getElementById('cartTotal').textContent;
+const discount = Number(subtotal)-Number(total);
+
   let msg = 'Hello, I want to order Nutri Mix.%0A%0A';
   msg += 'Name: ' + name + '%0APhone: ' + phone + '%0AAddress: ' + address + '%0A%0A';
   msg += 'Order Details:%0A';
@@ -508,12 +599,9 @@ function sendWhatsApp(){
 
   msg += '- ' + productName + ' x ' + i.qty + '%0A';
 });
-  msg += '%0ATotal: ₹' + total;
+  msg += '%0ADiscount: ₹' + discount + '%0AFinal Payable: ₹' + total;
   window.open('https://wa.me/919250260057?text=' + msg, '_blank');
 
-setTimeout(()=>{
-document.getElementById('successPopup').style.display='block';
-},500);
 }
 
 // ================= AJAX REVIEW SUBMISSION =================
@@ -624,10 +712,6 @@ document.querySelector('nav').classList.toggle('show');
 }
 
 
-function closePopup(){
- document.getElementById('successPopup').style.display='none';
-}
-
 function saveCart(){
  localStorage.setItem('nutrimix_cart', JSON.stringify(cart));
 }
@@ -664,9 +748,43 @@ addToCart=function(name,price,img){
  cart.classList.add('bump');
 }
 
+
+
+function openPaymentModal(){
+ document.getElementById('qrPayAmount').textContent=document.getElementById('cartTotal').textContent;
+ document.getElementById('qrModal').style.display='block';
+}
+
+function closeQrModal(){
+ document.getElementById('qrModal').style.display='none';
+ document.getElementById('paymentGuideModal').style.display='block';
+ const btn=document.getElementById('waOrderBtn');
+ btn.classList.add('whatsapp-highlight');
+ btn.scrollIntoView({behavior:'smooth',block:'center'});
+}
+function closePaymentGuide(){
+ document.getElementById('paymentGuideModal').style.display='none';
+}
+
 </script>
 
 
 <a style="position:fixed;left:20px;bottom:80px;background:#E1306C;color:#fff;padding:14px 18px;border-radius:999px;text-decoration:none;font-weight:bold;z-index:1000" href="https://instagram.com/nutri___mix" target="_blank">Instagram</a>
 <div class="sticky-cartbar">🛒 Nutri Mix • PAN India Delivery</div>
+
+<div id="paymentGuideModal" class="payment-guide-modal">
+<div class="payment-guide-box">
+<div class="icon">✅</div>
+<h2>One Final Step Remaining</h2>
+<p>To confirm your order:</p>
+<ul>
+<li>Click <b>Send Order on WhatsApp</b></li>
+<li>Share your order details</li>
+<li>Send your payment screenshot</li>
+</ul>
+<p><b>Your order will be confirmed after we receive the payment screenshot.</b></p>
+<button onclick="closePaymentGuide()">Got It</button>
+</div>
+</div>
+
 </body></html>
