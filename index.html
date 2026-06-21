@@ -143,9 +143,38 @@ animation:shine 3s infinite;
 
 .fbt-box{background:#fff8e8;border:2px dashed #d4a017;padding:12px;border-radius:12px;margin:12px 0}
 .fbt-btn{margin:5px}
+
+.top-banner{
+background:linear-gradient(135deg,#5a341d,#8b5a2b);
+color:#fff;
+overflow:hidden;
+white-space:nowrap;
+padding:12px 0;
+font-weight:700;
+font-size:15px;
+position:relative;
+box-shadow:0 4px 15px rgba(0,0,0,.15);
+}
+.top-banner-track{
+display:inline-block;
+padding-left:100%;
+animation:scrollBanner 20s linear infinite;
+}
+@keyframes scrollBanner{
+0%{transform:translateX(0)}
+100%{transform:translateX(-100%)}
+}
+
 </style></head>
 <body>
-<div class="announce">🚚 PAN INDIA DELIVERY • 🎉 New Launch: Vanilla & Butterscotch</div>
+<div class="top-banner">
+<div class="top-banner-track">
+🔥 FREE SHIPPING ON ORDERS ABOVE ₹500 🔥 &nbsp;&nbsp; • &nbsp;&nbsp;
+🚚 PAN INDIA DELIVERY &nbsp;&nbsp; • &nbsp;&nbsp;
+🍫 Nutri Chocoo &nbsp; ☕ Nutri Mocha &nbsp; 🍦 Nutri Vanilla &nbsp; 🍯 Nutri Butterscotch &nbsp;&nbsp; • &nbsp;&nbsp;
+❤️ Loved By Families Across India
+</div>
+</div>
 <header>
 <img src="logo 2.jpeg" alt="Nutri Mix Logo" loading="lazy" decoding="async">
 <h1>Nutri Mix</h1>
@@ -194,12 +223,15 @@ animation:shine 3s infinite;
 </section>
 
 
-
 <div class="offer-banner">
-🔥 LIMITED TIME OFFER 🔥<br>
 🛒 Cart Value ₹500 – ₹999 → Flat ₹20 OFF<br>
 🛒 Cart Value ₹1000 & Above → Flat ₹80 OFF
 </div>
+
+
+
+
+
 
 <section id="shop" class="section">
 <h2>Nutri Chocoo Mix</h2>
@@ -549,12 +581,11 @@ document.getElementById('cartSubtotal').textContent = total;
 document.getElementById('cartTotal').textContent = total-discount;
 
 const sp=document.getElementById('shippingProgress');
-if(total<500){
-sp.innerHTML='🛒 Add ₹'+(500-total)+' more to unlock ₹20 OFF';
-}else if(total<1000){
-sp.innerHTML='🎉 ₹20 OFF unlocked! Add ₹'+(1000-total)+' more to unlock ₹80 OFF';
+
+if(total < 500){
+sp.innerHTML='🚚 <strong>Free Shipping Available</strong><br>Add <strong>₹'+(500-total)+'</strong> more to your cart and unlock <strong>FREE SHIPPING</strong> across India.';
 }else{
-sp.innerHTML='🏆 Maximum discount unlocked: ₹80 OFF';
+sp.innerHTML='✅ <strong>Congratulations!</strong><br>Your order qualifies for <strong>FREE SHIPPING</strong> across India.';
 }
 
 
