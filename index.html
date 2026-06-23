@@ -16,7 +16,7 @@ nav a{color:#fff;text-decoration:none;margin:0 10px;font-size:14px}
 button,.btn{background:#5a341d;color:#fff;border:none;padding:12px 18px;border-radius:10px;cursor:pointer;text-decoration:none;display:inline-block}
 .price{font-size:28px;font-weight:bold;color:#5a341d}
 .badge{background:#fff3cd;padding:12px 16px;border-radius:10px;margin:10px 0}
-#cartIcon{position:fixed;right:20px;bottom:20px;background:#5a341d;color:#fff;padding:14px 18px;border-radius:999px;z-index:1000}
+#cartIcon{position:fixed;top:12px;right:12px;background:#fff;color:#3b2414;padding:10px 14px;border-radius:12px;z-index:2000;text-decoration:none;font-weight:bold;box-shadow:0 4px 12px rgba(0,0,0,.15)}
 .reviews{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px}
 input,textarea{width:100%;padding:12px;margin:8px 0;border:1px solid #ddd;border-radius:8px;box-sizing:border-box}
 footer{background:#3b2414;color:#fff;text-align:center;padding:30px;margin-top:40px}
@@ -207,6 +207,28 @@ width:100%;
 }
 }
 
+
+@media(max-width:768px){
+#cartIcon{
+top:10px!important;
+right:10px!important;
+bottom:auto!important;
+padding:10px 12px!important;
+font-size:14px!important;
+background:#ffffff!important;
+color:#3b2414!important;
+border:2px solid #5a341d;
+}
+.mobile-menu-btn{
+margin-right:90px!important;
+}
+}
+
+
+#cartIcon{top:auto!important;bottom:20px!important;right:20px!important;border-radius:999px!important}
+.cart-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:9998}
+.cart-drawer{position:fixed;top:0;right:-420px;width:380px;max-width:92vw;height:100vh;background:#fff;z-index:9999;transition:.35s;padding:20px;overflow:auto;box-shadow:-8px 0 25px rgba(0,0,0,.2)}
+.cart-drawer.open{right:0}
 </style></head>
 <body>
 <div class="top-banner">
@@ -239,7 +261,7 @@ width:100%;
 <a href="#checkout">Checkout</a>
 </nav>
 
-<a id="cartIcon" href="#cart">🛒 Cart (<span id="cartCount">0</span>)</a>
+<a id="cartIcon" href="javascript:void(0)" onclick="openCartDrawer()">🛒 <span id="cartCount">0</span></a>
 
 <section id="home" class="hero-slider">
 <div class="slider">
@@ -447,19 +469,7 @@ width:100%;
 
 
 
-<section id="cart" class="section">
-<h2>Your Cart</h2>
-<div class="cart-box">
-<div id="cartItems">No items added yet.</div>
-<div id="shippingProgress" style="background:#eef8ee;padding:10px;border-radius:10px;margin:10px 0;font-weight:bold"></div>
-<div id="fbtSuggestions" class="fbt-box" style="display:none"></div>
-<div id="discountBox" style="display:none;background:#e8f8e8;padding:10px;border-radius:10px;margin:10px 0;font-weight:bold;color:green"></div>
-<h3>Subtotal: ₹<span id="cartSubtotal">0</span></h3>
-<h3>Shipping Charges: ₹<span id="shippingCharge">0</span></h3>
-<h3>Total Payable: ₹<span id="cartTotal">0</span></h3>
-<a class="btn" href="#checkout">Proceed to Checkout</a>
-</div>
-</section>
+
 
 <section id="story" class="section">
 <h2>Our Story</h2>
@@ -575,6 +585,20 @@ width:100%;
 <img id="lightboxImg" src="" loading="lazy" decoding="async">
 </div>
 
+
+<div id="cartOverlay" class="cart-overlay" onclick="closeCartDrawer()"></div>
+<div id="cartDrawer" class="cart-drawer">
+<h2>🛒 Your Cart</h2>
+<div id="cartItems">No items added yet.</div>
+<div id="shippingProgress"></div>
+<div id="fbtSuggestions" class="fbt-box" style="display:none"></div>
+<div id="discountBox" style="display:none"></div>
+<h3>Subtotal: ₹<span id="cartSubtotal">0</span></h3>
+<h3>Shipping Charges: ₹<span id="shippingCharge">0</span></h3>
+<h3>Total Payable: ₹<span id="cartTotal">0</span></h3>
+<a class="btn" href="#checkout" onclick="closeCartDrawer()">Proceed to Checkout</a>
+</div>
+
 <footer>© 2026 Nutri Mix • Homemade with Love</footer>
 
 <script>
@@ -640,13 +664,41 @@ sp.innerHTML='✅ <strong>Congratulations!</strong><br>Your order qualifies for 
 }
 
 
+
 const fbt=document.getElementById('fbtSuggestions');
 if(cart.length > 0){
 fbt.style.display='block';
-fbt.innerHTML='🔥 <b>Customers Also Love</b><br><small>Try more flavours and save more with combo packs</small><br><button class="fbt-btn" onclick="addToCart(\'Nutri Mocha 100g\',120,\'nc 5.png\')">☕ Mocha</button><button class="fbt-btn" onclick="addToCart(\'Nutri Vanilla 100g\',99,\'vn 100.png\')">🍦 Vanilla</button><button class="fbt-btn" onclick="addToCart(\'Nutri Butterscotch 100g\',99,\'bs 100.png\')">🍯 Butterscotch</button><button class="fbt-btn" onclick="addToCart(\'Small Pack\',99,\'nc_101.jpeg\')">🍫 Chocoo</button><button class="fbt-btn" onclick="addToCart(\'👑 Ultimate 4 Flavour Combo\',399,\'combo 6.jpeg\')">👑 4 Flavour Combo</button>';
+fbt.innerHTML=`
+<h3 style="margin:0 0 10px">🔥 Frequently Added Together</h3>
+<div style="display:flex;gap:10px;overflow-x:auto;padding-bottom:8px">
+<div style="min-width:120px;background:#fff;border-radius:12px;padding:8px;text-align:center">
+<img src="chocoo 100.jpeg" style="width:100%;height:90px;object-fit:contain">
+<div>Chocoo 100g</div><b>₹99</b><br>
+<button class="fbt-btn" onclick="addToCart('Small Pack',99,'chocoo 100.jpeg')">ADD</button>
+</div>
+
+<div style="min-width:120px;background:#fff;border-radius:12px;padding:8px;text-align:center">
+<img src="mochaa.jpeg" style="width:100%;height:90px;object-fit:contain">
+<div>Mocha 100g</div><b>₹120</b><br>
+<button class="fbt-btn" onclick="addToCart('Nutri Mocha 100g',120,'mochaa.jpeg')">ADD</button>
+</div>
+
+<div style="min-width:120px;background:#fff;border-radius:12px;padding:8px;text-align:center">
+<img src="vanilaa.jpeg" style="width:100%;height:90px;object-fit:contain">
+<div>Vanilla 100g</div><b>₹99</b><br>
+<button class="fbt-btn" onclick="addToCart('Nutri Vanilla 100g',99,'vanilaa.jpeg')">ADD</button>
+</div>
+
+<div style="min-width:120px;background:#fff;border-radius:12px;padding:8px;text-align:center">
+<img src="butter.jpeg" style="width:100%;height:90px;object-fit:contain">
+<div>Butterscotch 100g</div><b>₹99</b><br>
+<button class="fbt-btn" onclick="addToCart('Nutri Butterscotch 100g',99,'butter.jpeg')">ADD</button>
+</div>
+</div>`;
 }else{
 fbt.style.display='none';
 }
+
 
 const d=document.getElementById('discountBox');
 if(discount>0){
@@ -692,8 +744,8 @@ function sendWhatsApp(){
   msg += 'Shipping: ₹' + shipping + '%0A';
   msg += 'Discount: ₹' + discount + '%0A';
   msg += 'Total Payable: ₹' + total + '%0A%0A';
-  msg += '✅ Payment Done%0A';
-  msg += '(Payment Screenshot Attached)%0A%0A';
+  msg += '📌 Kindly share your payment screenshot for faster order confirmation.%0A';
+  msg += 'If you have already shared it, please ignore this message.%0A%0A';
   msg += 'Thank You!';
 
   window.open('https://wa.me/919250260057?text=' + msg, '_blank');
@@ -861,11 +913,21 @@ function closePaymentGuide(){
  document.getElementById('paymentGuideModal').style.display='none';
 }
 
+
+function openCartDrawer(){
+document.getElementById('cartDrawer').classList.add('open');
+document.getElementById('cartOverlay').style.display='block';
+}
+function closeCartDrawer(){
+document.getElementById('cartDrawer').classList.remove('open');
+document.getElementById('cartOverlay').style.display='none';
+}
+
 </script>
 
 
 <a style="position:fixed;left:20px;bottom:80px;background:#E1306C;color:#fff;padding:14px 18px;border-radius:999px;text-decoration:none;font-weight:bold;z-index:1000" href="https://instagram.com/nutri___mix" target="_blank">Instagram</a>
-<div class="sticky-cartbar">🛒 Nutri Mix • PAN India Delivery</div>
+
 
 <div id="paymentGuideModal" class="payment-guide-modal">
 <div class="payment-guide-box">
