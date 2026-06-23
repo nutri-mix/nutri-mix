@@ -229,6 +229,26 @@ margin-right:90px!important;
 .cart-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:9998}
 .cart-drawer{position:fixed;top:0;right:-420px;width:380px;max-width:92vw;height:100vh;background:#fff;z-index:9999;transition:.35s;padding:20px;overflow:auto;box-shadow:-8px 0 25px rgba(0,0,0,.2)}
 .cart-drawer.open{right:0}
+
+html{
+scrollbar-width:none;
+-ms-overflow-style:none;
+}
+html::-webkit-scrollbar,
+body::-webkit-scrollbar,
+.cart-drawer::-webkit-scrollbar{
+display:none;
+width:0;
+}
+body{
+scrollbar-width:none;
+-ms-overflow-style:none;
+}
+.cart-drawer{
+scrollbar-width:none;
+-ms-overflow-style:none;
+}
+
 </style></head>
 <body>
 <div class="top-banner">
