@@ -165,6 +165,48 @@ animation:scrollBanner 20s linear infinite;
 100%{transform:translateX(-100%)}
 }
 
+
+@media(max-width:768px){
+.products{
+grid-template-columns:repeat(2,1fr)!important;
+gap:12px!important;
+}
+#combo .products{
+grid-template-columns:repeat(2,1fr)!important;
+}
+.section{
+padding:20px 10px!important;
+}
+.card{
+padding:10px!important;
+border-radius:14px!important;
+}
+.card img{
+height:140px!important;
+min-height:140px!important;
+max-height:140px!important;
+object-fit:contain!important;
+}
+.card h3{
+font-size:16px!important;
+line-height:1.2!important;
+margin:8px 0!important;
+}
+.weight{
+font-size:13px!important;
+margin:4px 0!important;
+}
+.price{
+font-size:22px!important;
+margin:6px 0!important;
+}
+button,.btn{
+padding:8px 10px!important;
+font-size:13px!important;
+width:100%;
+}
+}
+
 </style></head>
 <body>
 <div class="top-banner">
@@ -618,30 +660,43 @@ d.style.display='none';
 function removeItem(index){ cart.splice(index,1); renderCart(); }
 function sendWhatsApp(){
   if(cart.length===0){ alert('Please add products to cart first.'); return; }
+
   const name = document.getElementById('custName').value;
   const phone = document.getElementById('custPhone').value;
   const address = document.getElementById('custAddress').value;
-  
-const subtotal = document.getElementById('cartSubtotal') ? document.getElementById('cartSubtotal').textContent : 0;
-const total = document.getElementById('cartTotal').textContent;
-const discount = Number(subtotal)-Number(total);
 
-  let msg = 'Hello, I want to order Nutri Mix.%0A%0A';
-  msg += 'Name: ' + name + '%0APhone: ' + phone + '%0AAddress: ' + address + '%0A%0A';
-  msg += 'Order Details:%0A';
+  const subtotal = Number(document.getElementById('cartSubtotal').textContent || 0);
+  const shipping = Number(document.getElementById('shippingCharge').textContent || 0);
+  const total = Number(document.getElementById('cartTotal').textContent || 0);
+  const discount = Math.max(0, subtotal + shipping - total);
+
+  let msg = '🛍️ NEW NUTRI MIX ORDER%0A%0A';
+  msg += '👤 Name: ' + name + '%0A';
+  msg += '📍 Address: ' + address + '%0A%0A';
+
+  msg += '📦 ORDER DETAILS%0A';
+
   cart.forEach(i => {
-  let productName = i.name;
+    let productName = i.name;
 
-  if(i.name === 'Small Pack') productName = 'Nutri Chocoo - Small Pack';
-  else if(i.name === 'Regular Pack') productName = 'Nutri Chocoo - Regular Pack';
-  else if(i.name === 'Value Pack') productName = 'Nutri Chocoo - Value Pack';
-  else if(i.name === 'Super Saver Pack') productName = 'Nutri Chocoo - Super Saver Pack';
+    if(i.name === 'Small Pack') productName = 'Nutri Chocoo - Small Pack';
+    else if(i.name === 'Regular Pack') productName = 'Nutri Chocoo - Regular Pack';
+    else if(i.name === 'Value Pack') productName = 'Nutri Chocoo - Value Pack';
+    else if(i.name === 'Super Saver Pack') productName = 'Nutri Chocoo - Super Saver Pack';
 
-  msg += '- ' + productName + ' x ' + i.qty + '%0A';
-});
-  msg += '%0ADiscount: ₹' + discount + '%0AFinal Payable: ₹' + total;
+    msg += '• ' + productName + ' × ' + i.qty + ' = ₹' + (i.price * i.qty) + '%0A';
+  });
+
+  msg += '%0A💰 BILL SUMMARY%0A';
+  msg += 'Subtotal: ₹' + subtotal + '%0A';
+  msg += 'Shipping: ₹' + shipping + '%0A';
+  msg += 'Discount: ₹' + discount + '%0A';
+  msg += 'Total Payable: ₹' + total + '%0A%0A';
+  msg += '✅ Payment Done%0A';
+  msg += '(Payment Screenshot Attached)%0A%0A';
+  msg += 'Thank You!';
+
   window.open('https://wa.me/919250260057?text=' + msg, '_blank');
-
 }
 
 // ================= AJAX REVIEW SUBMISSION =================
