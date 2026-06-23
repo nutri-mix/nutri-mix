@@ -225,7 +225,7 @@ margin-right:90px!important;
 }
 
 
-#cartIcon{top:auto!important;bottom:20px!important;right:20px!important;border-radius:999px!important}
+#cartIcon{top:auto!important;bottom:20px!important;right:20px!important;border-radius:999px!important;background:#5a341d!important;color:#fff!important;border:3px solid #fff!important;box-shadow:0 8px 25px rgba(0,0,0,.35)!important;font-size:16px!important}
 .cart-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:9998}
 .cart-drawer{position:fixed;top:0;right:-420px;width:380px;max-width:92vw;height:100vh;background:#fff;z-index:9999;transition:.35s;padding:20px;overflow:auto;box-shadow:-8px 0 25px rgba(0,0,0,.2)}
 .cart-drawer.open{right:0}
@@ -588,7 +588,7 @@ margin-right:90px!important;
 
 <div id="cartOverlay" class="cart-overlay" onclick="closeCartDrawer()"></div>
 <div id="cartDrawer" class="cart-drawer">
-<h2>🛒 Your Cart</h2>
+<div style="display:flex;justify-content:space-between;align-items:center"><h2>🛒 Your Cart</h2><button onclick="closeCartDrawer()" style="width:auto;padding:8px 12px;border-radius:50%">✕</button></div>
 <div id="cartItems">No items added yet.</div>
 <div id="shippingProgress"></div>
 <div id="fbtSuggestions" class="fbt-box" style="display:none"></div>
