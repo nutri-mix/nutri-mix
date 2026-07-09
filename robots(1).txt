@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://nutri-mix.github.io/nutri-mix/sitemap.xml
