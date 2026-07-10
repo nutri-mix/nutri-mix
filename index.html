@@ -230,7 +230,7 @@ margin-right:90px!important;
 
 #cartIcon{top:auto!important;bottom:18px!important;right:18px!important;border-radius:999px!important;background:#5a341d!important;color:#fff!important;border:3px solid #fff!important;box-shadow:0 8px 20px rgba(0,0,0,.30)!important;font-size:18px!important;padding:12px 14px!important;min-width:56px;min-height:56px;display:flex;align-items:center;justify-content:center}
 .cart-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:9998}
-.cart-drawer{position:fixed;top:0;right:-420px;width:380px;max-width:92vw;height:100vh;background:#fff;z-index:9999;transition:.35s;padding:20px;overflow:auto;box-shadow:-8px 0 25px rgba(0,0,0,.2)}
+.cart-drawer{position:fixed;top:0;right:-420px;width:390px;max-width:92vw;height:100vh;background:#fff;z-index:9999;transition:.35s;padding:20px;overflow:auto;box-shadow:-8px 0 30px rgba(0,0,0,.25);border-left:4px solid #d4a017}
 .cart-drawer.open{right:0}
 
 html{
@@ -285,6 +285,32 @@ border:2px solid #5a341d;
 @media(max-width:768px){
 .search-wrap{max-width:100%;padding:0 10px}
 #productSearch{padding-right:42px}
+}
+
+.empty-cart{
+text-align:center;padding:30px 20px;border:2px dashed #e6d3b1;border-radius:20px;
+background:linear-gradient(#fff,#fdf7ef)
+}
+.empty-cart .emoji{font-size:90px;display:inline-block;animation:floaty 2.5s ease-in-out infinite}
+.empty-cart h3{margin:12px 0 8px}
+.empty-cart p{color:#666;line-height:1.5}
+.empty-cart .shop-btn{display:inline-block;margin-top:16px;background:#5a341d;color:#fff;padding:12px 18px;border-radius:12px;text-decoration:none}
+@keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+
+
+.cart-toast{
+position:sticky;top:0;display:none;
+background:#eafaf0;color:#166534;
+border:1px solid #86efac;
+padding:12px 14px;
+border-radius:12px;
+margin-bottom:14px;
+font-weight:bold;
+animation:slideDown .3s ease;
+}
+@keyframes slideDown{
+from{opacity:0;transform:translateY(-12px)}
+to{opacity:1;transform:translateY(0)}
 }
 </style><!-- Google Analytics -->
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-TM5RQ4DXW5"></script>
@@ -687,7 +713,7 @@ gtag('config', 'G-TM5RQ4DXW5');
 <div id="cartOverlay" class="cart-overlay" onclick="closeCartDrawer()"></div>
 <div id="cartDrawer" class="cart-drawer">
 <div style="display:flex;justify-content:space-between;align-items:center"><h2>🛒 Your Cart</h2><button onclick="closeCartDrawer()" style="width:auto;padding:8px 12px;border-radius:50%">✕</button></div>
-<div id="cartItems">No items added yet.</div>
+<div id="cartToast" class="cart-toast">✅ Item added to your cart</div><div id="cartItems">No items added yet.</div>
 <div id="shippingProgress"></div>
 <div id="fbtSuggestions" class="fbt-box" style="display:none"></div>
 <div id="discountBox" style="display:none"></div>
@@ -713,15 +739,27 @@ function renderCart(){
   document.getElementById('cartCount').textContent = cart.reduce((a,b)=>a+b.qty,0);
   const cartItems = document.getElementById('cartItems');
   if(cart.length===0){
-  cartItems.innerHTML='No items added yet.';
-  document.getElementById('cartTotal').textContent='0';
-  document.getElementById('cartSubtotal').textContent='0';
-  const sc=document.getElementById('shippingCharge'); if(sc) sc.textContent='0';
-  document.getElementById('shippingProgress').innerHTML='';
-  document.getElementById('fbtSuggestions').style.display='none';
-  document.getElementById('discountBox').style.display='none';
-  return;
+  cartItems.innerHTML=`<div class="empty-cart">
+<div class="emoji">🛒🥺</div>
+<h3>Your Cart is Empty</h3>
+<p>Looks like your shopping cart is waiting for some delicious Nutri Mix products.</p>
+<a href="#shop" class="shop-btn" onclick="closeCartDrawer()">🛍️ Explore Products</a>
+</div>`;
+document.getElementById('cartSubtotal').parentElement.style.display='none';
+document.getElementById('shippingCharge').parentElement.style.display='none';
+document.getElementById('cartTotal').parentElement.style.display='none';
+document.querySelector('.sticky-checkout,.btn[href="#checkout"]').style.display='none';
+document.getElementById('shippingProgress').innerHTML='';
+document.getElementById('fbtSuggestions').style.display='none';
+document.getElementById('discountBox').style.display='none';
+return;
 }
+document.getElementById('cartSubtotal').parentElement.style.display='';
+document.getElementById('shippingCharge').parentElement.style.display='';
+document.getElementById('cartTotal').parentElement.style.display='';
+const checkout=document.querySelector('.sticky-checkout,.btn[href="#checkout"]');
+if(checkout) checkout.style.display='';
+
   let total = 0;
   cartItems.innerHTML = cart.map((item, index) => {
     total += item.price * item.qty;
@@ -756,45 +794,30 @@ document.getElementById('cartTotal').textContent = finalTotal;
 const sp=document.getElementById('shippingProgress');
 
 if(total < 500){
-sp.innerHTML='🚚 <strong>Shipping Charge Applied:</strong> ₹50<br>Add <strong>₹'+(500-total)+'</strong> more to get <strong>FREE SHIPPING</strong>.';
+sp.innerHTML='🚚 <strong>Shipping:</strong> ₹50<br><progress max="500" value="'+total+'" style="width:100%"></progress><br>Add <strong>₹'+(500-total)+'</strong> more for FREE Shipping.';
 }else{
-sp.innerHTML='✅ <strong>Congratulations!</strong><br>Your order qualifies for <strong>FREE SHIPPING</strong> across India.';
+sp.innerHTML='✅ <strong>Free Shipping Unlocked!</strong><br>'+(total<1000?'Add <b>₹'+(1000-total)+'</b> more to unlock ₹80 OFF.':'🎉 Maximum Discount Unlocked');
 }
 
 const fbt=document.getElementById('fbtSuggestions');
-if(cart.length > 0){
-fbt.style.display='block';
-fbt.innerHTML=`
-<h3 style="margin:0 0 10px">🔥 Frequently Added Together</h3>
-<div style="display:flex;gap:10px;overflow-x:auto;padding-bottom:8px">
-<div style="min-width:120px;background:#fff;border-radius:12px;padding:8px;text-align:center">
-<img src="chocoo 100.jpeg" style="width:100%;height:90px;object-fit:contain">
-<div>Chocoo 100g</div><b>₹199</b><br>
-<button class="fbt-btn" onclick="addToCart('Small Pack',199,'nc_101.jpeg')">ADD</button>
-</div>
-
-<div style="min-width:120px;background:#fff;border-radius:12px;padding:8px;text-align:center">
-<img src="mochaa.jpeg" style="width:100%;height:90px;object-fit:contain">
-<div>Mocha 100g</div><b>₹220</b><br>
-<button class="fbt-btn" onclick="addToCart('Nutri Mocha 100g',220,'nc 5.png')">ADD</button>
-</div>
-
-<div style="min-width:120px;background:#fff;border-radius:12px;padding:8px;text-align:center">
-<img src="vanilaa.jpeg" style="width:100%;height:90px;object-fit:contain">
-<div>Vanilla 100g</div><b>₹199</b><br>
-<button class="fbt-btn" onclick="addToCart('Nutri Vanilla 100g',199,'vn 100.png')">ADD</button>
-</div>
-
-<div style="min-width:120px;background:#fff;border-radius:12px;padding:8px;text-align:center">
-<img src="butter.jpeg" style="width:100%;height:90px;object-fit:contain">
-<div>Butterscotch 100g</div><b>₹199</b><br>
-<button class="fbt-btn" onclick="addToCart('Nutri Butterscotch 100g',199,'bs 100.png')">ADD</button>
-</div>
-</div>`;
-}else{
-fbt.style.display='none';
+const cartNames=cart.map(i=>i.name);
+let suggestions=[
+{name:'Nutri Mocha 100g',price:220,img:'nc 5.png',tag:'⭐ Bestseller'},
+{name:'Nutri Vanilla 100g',price:199,img:'vn 100.png',tag:'⭐ Bestseller'},
+{name:'Nutri Butterscotch 100g',price:199,img:'bs 100.png',tag:'⭐ Bestseller'},
+{name:'Nutri Strawberry 100g',price:199,img:'NS 100.jpeg',tag:'🆕 New'},
+{name:'Nutri Kesar Pista 100g',price:199,img:'ks 100.jpeg',tag:'🆕 New'},
+{name:'👑 Ultimate 4 Flavour Combo',price:399,img:'combo 6.jpeg',tag:'🔥 Combo'}
+];
+if(cartNames.some(n=>n.includes('Small Pack')||n.includes('Chocoo'))) suggestions.sort((a,b)=>(a.name.includes('Mocha')?-1:1));
+if(cartNames.some(n=>n.includes('Mocha'))) suggestions.sort((a,b)=>(a.name.includes('Combo')?-1:1));
+suggestions=suggestions.filter(s=>!cartNames.includes(s.name));
+if(total<500) suggestions.sort((a,b)=>Math.abs((total+a.price)-500)-Math.abs((total+b.price)-500));
+else if(total<1000) suggestions.sort((a,b)=>Math.abs((total+a.price)-1000)-Math.abs((total+b.price)-1000));
+fbt.style.display=suggestions.length?'block':'none';
+if(suggestions.length){
+fbt.innerHTML='<h3>🎯 Recommended For You</h3><div style="display:flex;gap:12px;overflow:auto">'+suggestions.slice(0,5).map(s=>`<div style="min-width:140px;background:#fff;border:1px solid #eee;border-radius:14px;padding:10px;text-align:center"><img src="${s.img}" style="width:100%;height:95px;object-fit:contain"><div style="font-size:11px;color:#0a8">${s.tag}</div><div style="font-size:13px">${s.name}</div><b>₹${s.price}</b><br><button class="fbt-btn" onclick="addToCart('${s.name}',${s.price},'${s.img}')">+ Add</button></div>`).join('')+'</div>';
 }
-
 const d=document.getElementById('discountBox');
 if(discount>0){
 d.style.display='block';
@@ -1009,6 +1032,14 @@ document.querySelectorAll('.card img').forEach(img=>{
 const oldAddToCart=addToCart;
 addToCart=function(name,price,img){
  oldAddToCart(name,price,img);
+
+const toast=document.getElementById('cartToast');
+if(toast){
+ toast.style.display='block';
+ clearTimeout(window.cartToastTimer);
+ window.cartToastTimer=setTimeout(()=>toast.style.display='none',1500);
+}
+
  const cart=document.getElementById('cartIcon');
  cart.classList.remove('bump');
  void cart.offsetWidth;
