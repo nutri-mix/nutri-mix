@@ -1,1 +1,0 @@
-Extract all files and open index.html. All images have been restored and the QR image is fixed.
